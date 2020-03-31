@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Gradiantes Aritmeticos</title>
+        <script src="Chart.js"></script>
+    </head>
+    <body>
+        <form action="" name="formulario" method="get">
+            Cuota Inicial:
+            <input type="text" name="C" placeholder="Ingrese cuota inicial">
+            <br>
+            Numero de Cuotas:
+            <input type="text" name="n" placeholder="Introduzca numero de cuotas">
+            <br>
+            Gradiante Geometrico:
+            <input type="text" name="GG" placeholder="Ingrese el gradiante geometrico"> 
+            <br>
+            Interes Anual:
+            <input type="text" name="i" placeholder="Ingrese el interes anual">
+            Con capitalizacion: 
+            <select name="miSelect2"> 
+                <option value="12">Mensual 
+                <option value="24">Quincenal
+                <option value="52">Semanal
+                <option value="360">Diaria 
+                </select> 
+            <br>
+            <input type="button" id="btn" name="btn" value="Calcular" onclick="calcular()">
+        </form>
+        <canvas id="grafica" width="400" height="300"></canvas>
+
+        <script type="text/javascript">
+        let miCanvas=document.getElementById('grafica').getContext("2d");
+            
+
+         function calcular(){
+            var indice2 = document.formulario.miSelect2.selectedIndex;
+            var i = document.formulario.i.value/100;
+            i=i/document.formulario.miSelect2.options[indice2].value;
+            var C = document.formulario.C.value;
+            var GG = document.formulario.GG.value/100;
+            var n= document.formulario.n.value;
+
+            var result= C*((Math.pow((1+GG)/(1+i),n)-1)/(GG-i));
+            
+            alert(result);
+
+
+         var data = {
+            datasets: [
+        {   
+            label: "Gradianes",
+            fillColor: "rgba(220,220,220,0.2)",
+            strokeColor: "rgba(220,220,220,1)",
+            pointColor: "rgba(220,220,220,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(220,220,220,1)",
+        }
+    ]
+};
+
+function addData(chart, label, data) {
+    chart.data.labels.push(label);
+    chart.data.datasets.forEach((dataset) => {
+        dataset.data.push(data);
+    });
+    chart.update();
+}
+var chart = new Chart(miCanvas,{
+            type: 'line',
+            data: data
+      });
+      
+      for(var a = 1; a<=n; a++){
+        
+        var grad = C*((Math.pow((1+GG)/(1+i),a)-1)/(GG-i));
+        console.log(grad);
+        addData(chart,a,grad);
+    };
+         }
+        </script>
+    </body>
+</html>
